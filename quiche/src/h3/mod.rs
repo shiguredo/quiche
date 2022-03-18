@@ -674,7 +674,7 @@ impl Connection {
                 max_field_section_size: config.max_field_section_size,
                 qpack_max_table_capacity: config.qpack_max_table_capacity,
                 qpack_blocked_streams: config.qpack_blocked_streams,
-                enable_connect_protocol: None,
+                enable_connect_protocol: enable_webtransport,
                 h3_datagram,
                 enable_webtransport,
                 raw: Default::default(),
@@ -734,7 +734,7 @@ impl Connection {
         conn: &mut super::Connection, config: &Config,
     ) -> Result<Connection> {
         let mut http3_conn =
-            Connection::new(config, conn.is_server, conn.dgram_enabled(), false)?;
+            Connection::new(config, conn.is_server, conn.dgram_enabled(), true)?;
 
         match http3_conn.send_settings(conn) {
             Ok(_) => (),
