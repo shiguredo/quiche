@@ -39,7 +39,9 @@ pub const MAX_PUSH_FRAME_TYPE_ID: u64 = 0xD;
 pub const SETTINGS_QPACK_MAX_TABLE_CAPACITY: u64 = 0x1;
 pub const SETTINGS_MAX_FIELD_SECTION_SIZE: u64 = 0x6;
 pub const SETTINGS_QPACK_BLOCKED_STREAMS: u64 = 0x7;
-// https://datatracker.ietf.org/doc/html/draft-ietf-masque-h3-datagram-06#section-7.1
+// https://www.ietf.org/archive/id/draft-ietf-httpbis-h3-websockets-04.html#section-5
+pub const SETTINGS_ENABLE_CONNECT_PROTOCOL: u64 = 0x8;
+// https://www.ietf.org/archive/id/draft-ietf-masque-h3-datagram-06.html#section-7.1
 pub const SETTINGS_H3_DATAGRAM: u64 = 0xffd277;
 // https://www.ietf.org/archive/id/draft-ietf-webtrans-http3-02.html#section-8.2
 pub const SETTINGS_ENABLE_WEBTRANSPORT: u64 = 0x2b603742;
@@ -65,6 +67,7 @@ pub enum Frame {
         max_field_section_size: Option<u64>,
         qpack_max_table_capacity: Option<u64>,
         qpack_blocked_streams: Option<u64>,
+        enable_connect_protocol: Option<u64>,
         h3_datagram: Option<u64>,
         enable_webtransport: Option<u64>,
         grease: Option<(u64, u64)>,
@@ -374,6 +377,7 @@ fn parse_settings_frame(
         max_field_section_size,
         qpack_max_table_capacity,
         qpack_blocked_streams,
+        enable_connect_protocol,
         h3_datagram,
         enable_webtransport,
         grease: None,
@@ -497,6 +501,7 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: Some(0),
             h3_datagram: Some(0),
             enable_webtransport: Some(0),
             grease: None,
@@ -532,6 +537,7 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: Some(0),
             h3_datagram: Some(0),
             enable_webtransport: Some(0),
             grease: Some((33, 33)),
@@ -553,6 +559,7 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: Some(0),
             h3_datagram: Some(0),
             enable_webtransport: Some(0),
             grease: None,
@@ -590,6 +597,7 @@ mod tests {
             max_field_section_size: Some(1024),
             qpack_max_table_capacity: None,
             qpack_blocked_streams: None,
+            enable_connect_protocol: None,
             h3_datagram: None,
             enable_webtransport: None,
             grease: None,
@@ -627,6 +635,7 @@ mod tests {
             max_field_section_size: None,
             qpack_max_table_capacity: None,
             qpack_blocked_streams: None,
+            enable_connect_protocol: None,
             h3_datagram: Some(1),
             enable_webtransport: None,
             grease: None,
@@ -662,6 +671,7 @@ mod tests {
             max_field_section_size: None,
             qpack_max_table_capacity: None,
             qpack_blocked_streams: None,
+            enable_connect_protocol: None,
             h3_datagram: Some(5),
             enable_webtransport: None,
             grease: None,
@@ -701,6 +711,7 @@ mod tests {
             max_field_section_size: None,
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: None,
             h3_datagram: None,
             enable_webtransport: None,
             grease: None,

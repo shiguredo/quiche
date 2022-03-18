@@ -1584,6 +1584,7 @@ impl Connection {
                 .local_settings
                 .qpack_max_table_capacity,
             qpack_blocked_streams: self.local_settings.qpack_blocked_streams,
+            enable_connect_protocol: self.local_settings.enable_connect_protocol,
             h3_datagram: self.local_settings.h3_datagram,
             enable_webtransport: self.local_settings.enable_webtransport,
             grease,
@@ -3841,6 +3842,7 @@ mod tests {
             max_field_section_size: None,
             qpack_max_table_capacity: None,
             qpack_blocked_streams: None,
+            enable_connect_protocol: None,
             h3_datagram: Some(1),
             enable_webtransport: None,
             grease: None,
