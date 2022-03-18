@@ -159,6 +159,7 @@ impl Frame {
                 max_field_section_size,
                 qpack_max_table_capacity,
                 qpack_blocked_streams,
+                enable_connect_protocol,
                 h3_datagram,
                 enable_webtransport,
                 grease,
@@ -178,6 +179,11 @@ impl Frame {
 
                 if let Some(val) = qpack_blocked_streams {
                     len += octets::varint_len(SETTINGS_QPACK_BLOCKED_STREAMS);
+                    len += octets::varint_len(*val);
+                }
+
+                if let Some(val) = enable_connect_protocol {
+                    len += octets::varint_len(SETTINGS_ENABLE_CONNECT_PROTOCOL);
                     len += octets::varint_len(*val);
                 }
 
@@ -318,6 +324,7 @@ fn parse_settings_frame(
     let mut max_field_section_size = None;
     let mut qpack_max_table_capacity = None;
     let mut qpack_blocked_streams = None;
+    let mut enable_connect_protocol = None;
     let mut h3_datagram = None;
     let mut enable_webtransport = None; 
     let mut raw = Vec::new();
@@ -548,6 +555,7 @@ mod tests {
             (SETTINGS_MAX_FIELD_SECTION_SIZE, 0),
             (SETTINGS_QPACK_MAX_TABLE_CAPACITY, 0),
             (SETTINGS_QPACK_BLOCKED_STREAMS, 0),
+            (SETTINGS_ENABLE_CONNECT_PROTOCOL, 0),
             (SETTINGS_H3_DATAGRAM, 0),
             (SETTINGS_ENABLE_WEBTRANSPORT, 0),
             (33, 33),
