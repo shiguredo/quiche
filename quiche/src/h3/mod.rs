@@ -1436,7 +1436,7 @@ impl Connection {
         self.peer_settings.raw.as_deref()
     }
 
-    pub fn local_settings_webtransport(&self) -> Option<u64> {
+    pub fn local_settings_enable_webtransport(&self) -> Option<u64> {
         self.local_settings.enable_webtransport
     }
 
