@@ -1436,6 +1436,14 @@ impl Connection {
         self.peer_settings.raw.as_deref()
     }
 
+    pub fn local_settings_webtransport(&self) -> Option<u64> {
+        self.local_settings.enable_webtransport
+    }
+
+    pub fn local_settings_h3_datagram(&self) -> Option<u64> {
+        self.local_settings.h3_datagram
+    }
+
     fn open_uni_stream(
         &mut self, conn: &mut super::Connection, ty: u64,
     ) -> Result<u64> {
