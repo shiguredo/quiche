@@ -355,6 +355,14 @@ fn parse_settings_frame(
                 qpack_blocked_streams = Some(value);
             },
 
+            SETTINGS_ENABLE_CONNECT_PROTOCOL => {
+                if value > 1 {
+                    return Err(super::Error::SettingsError);
+                }
+
+                enable_connect_protocol = Some(value);
+            },            
+
             SETTINGS_H3_DATAGRAM => {
                 if value > 1 {
                     return Err(super::Error::SettingsError);
