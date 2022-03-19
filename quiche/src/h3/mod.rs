@@ -1436,14 +1436,6 @@ impl Connection {
         self.peer_settings.raw.as_deref()
     }
 
-    pub fn local_settings_enable_webtransport(&self) -> Option<u64> {
-        self.local_settings.enable_webtransport
-    }
-
-    pub fn local_settings_h3_datagram(&self) -> Option<u64> {
-        self.local_settings.h3_datagram
-    }
-
     fn open_uni_stream(
         &mut self, conn: &mut super::Connection, ty: u64,
     ) -> Result<u64> {
@@ -1596,12 +1588,9 @@ impl Connection {
                 .local_settings
                 .qpack_max_table_capacity,
             qpack_blocked_streams: self.local_settings.qpack_blocked_streams,
-            // enable_connect_protocol: self.local_settings.enable_connect_protocol,
-            // h3_datagram: self.local_settings.h3_datagram,
-            // enable_webtransport: self.local_settings.enable_webtransport,
-            enable_connect_protocol: Some(1),
-            h3_datagram: Some(1),
-            enable_webtransport: Some(1),
+            enable_connect_protocol: self.local_settings.enable_connect_protocol,
+            h3_datagram: self.local_settings.h3_datagram,
+            enable_webtransport: self.local_settings.enable_webtransport,
             grease,
             raw: Default::default(),
         };
