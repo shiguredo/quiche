@@ -675,7 +675,7 @@ impl Connection {
                 qpack_max_table_capacity: config.qpack_max_table_capacity,
                 qpack_blocked_streams: config.qpack_blocked_streams,
                 enable_connect_protocol: enable_webtransport,
-                h3_datagram,
+                h3_datagram: enable_webtransport,
                 enable_webtransport,
                 raw: Default::default(),
             },
