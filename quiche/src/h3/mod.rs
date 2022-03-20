@@ -609,7 +609,9 @@ struct ConnectionSettings {
     pub max_field_section_size: Option<u64>,
     pub qpack_max_table_capacity: Option<u64>,
     pub qpack_blocked_streams: Option<u64>,
+    pub enable_connect_protocol: Option<u64>,
     pub h3_datagram: Option<u64>,
+    pub enable_webtransport: Option<u64>,
     pub raw: Option<Vec<(u64, u64)>>,
 }
 
@@ -653,10 +655,11 @@ pub struct Connection {
 
 impl Connection {
     fn new(
-        config: &Config, is_server: bool, enable_dgram: bool,
+        config: &Config, is_server: bool, enable_dgram: bool, enable_webtransport: bool
     ) -> Result<Connection> {
         let initial_uni_stream_id = if is_server { 0x3 } else { 0x2 };
         let h3_datagram = if enable_dgram { Some(1) } else { None };
+        let enable_webtransport = if enable_webtransport { Some(1) } else { None };
 
         Ok(Connection {
             is_server,
@@ -671,7 +674,9 @@ impl Connection {
                 max_field_section_size: config.max_field_section_size,
                 qpack_max_table_capacity: config.qpack_max_table_capacity,
                 qpack_blocked_streams: config.qpack_blocked_streams,
-                h3_datagram,
+                enable_connect_protocol: enable_webtransport,
+                h3_datagram: enable_webtransport,
+                enable_webtransport,
                 raw: Default::default(),
             },
 
@@ -679,7 +684,9 @@ impl Connection {
                 max_field_section_size: None,
                 qpack_max_table_capacity: None,
                 qpack_blocked_streams: None,
+                enable_connect_protocol: None,
                 h3_datagram: None,
+                enable_webtransport: None,
                 raw: Default::default(),
             },
 
@@ -727,7 +734,7 @@ impl Connection {
         conn: &mut super::Connection, config: &Config,
     ) -> Result<Connection> {
         let mut http3_conn =
-            Connection::new(config, conn.is_server, conn.dgram_enabled())?;
+            Connection::new(config, conn.is_server, conn.dgram_enabled(), true)?;
 
         match http3_conn.send_settings(conn) {
             Ok(_) => (),
@@ -1581,7 +1588,9 @@ impl Connection {
                 .local_settings
                 .qpack_max_table_capacity,
             qpack_blocked_streams: self.local_settings.qpack_blocked_streams,
-            h3_datagram: self.local_settings.h3_datagram,
+            enable_connect_protocol: self.local_settings.enable_webtransport,
+            h3_datagram: self.local_settings.enable_webtransport,
+            enable_webtransport: self.local_settings.enable_webtransport,
             grease,
             raw: Default::default(),
         };
@@ -1918,7 +1927,9 @@ impl Connection {
                 max_field_section_size,
                 qpack_max_table_capacity,
                 qpack_blocked_streams,
+                enable_connect_protocol,
                 h3_datagram,
+                enable_webtransport,
                 raw,
                 ..
             } => {
@@ -1926,7 +1937,9 @@ impl Connection {
                     max_field_section_size,
                     qpack_max_table_capacity,
                     qpack_blocked_streams,
+                    enable_connect_protocol,
                     h3_datagram,
+                    enable_webtransport,
                     raw,
                 };
 
@@ -2181,8 +2194,8 @@ pub mod testing {
             let server_dgram = pipe.server.dgram_enabled();
             Ok(Session {
                 pipe,
-                client: Connection::new(h3_config, false, client_dgram)?,
-                server: Connection::new(h3_config, true, server_dgram)?,
+                client: Connection::new(h3_config, false, client_dgram, false)?,
+                server: Connection::new(h3_config, true, server_dgram, false)?,
             })
         }
 
@@ -3155,10 +3168,10 @@ mod tests {
     fn uni_stream_local_counting() {
         let config = Config::new().unwrap();
 
-        let h3_cln = Connection::new(&config, false, false).unwrap();
+        let h3_cln = Connection::new(&config, false, false, false).unwrap();
         assert_eq!(h3_cln.next_uni_stream_id, 2);
 
-        let h3_srv = Connection::new(&config, true, false).unwrap();
+        let h3_srv = Connection::new(&config, true, false, false).unwrap();
         assert_eq!(h3_srv.next_uni_stream_id, 3);
     }
 
@@ -3836,7 +3849,9 @@ mod tests {
             max_field_section_size: None,
             qpack_max_table_capacity: None,
             qpack_blocked_streams: None,
+            enable_connect_protocol: None,
             h3_datagram: Some(1),
+            enable_webtransport: None,
             grease: None,
             raw: Default::default(),
         };

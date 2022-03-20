@@ -591,7 +591,9 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: None,
             h3_datagram: None,
+            enable_webtransport: None,
             grease: None,
             raw: Some(raw_settings),
         };
@@ -654,7 +656,9 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: None,
             h3_datagram: None,
+            enable_webtransport: None,
             grease: None,
             raw: Some(raw_settings),
         };
@@ -726,7 +730,9 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: None,
             h3_datagram: None,
+            enable_webtransport: None,
             grease: None,
             raw: Some(raw_settings),
         };
@@ -777,7 +783,9 @@ mod tests {
             max_field_section_size: Some(0),
             qpack_max_table_capacity: Some(0),
             qpack_blocked_streams: Some(0),
+            enable_connect_protocol: None,
             h3_datagram: None,
+            enable_webtransport: None,
             grease: None,
             raw: Some(raw_settings),
         };
