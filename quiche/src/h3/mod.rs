@@ -1588,8 +1588,8 @@ impl Connection {
                 .local_settings
                 .qpack_max_table_capacity,
             qpack_blocked_streams: self.local_settings.qpack_blocked_streams,
-            enable_connect_protocol: self.local_settings.enable_connect_protocol,
-            h3_datagram: self.local_settings.h3_datagram,
+            enable_connect_protocol: self.local_settings.enable_webtransport,
+            h3_datagram: self.local_settings.enable_webtransport,
             enable_webtransport: self.local_settings.enable_webtransport,
             grease,
             raw: Default::default(),
