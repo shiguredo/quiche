@@ -220,8 +220,18 @@ impl Frame {
                     b.put_varint(*val as u64)?;
                 }
 
+                if let Some(val) = enable_connect_protocol {
+                    b.put_varint(SETTINGS_ENABLE_CONNECT_PROTOCOL)?;
+                    b.put_varint(*val as u64)?;
+                }
+
                 if let Some(val) = h3_datagram {
                     b.put_varint(SETTINGS_H3_DATAGRAM)?;
+                    b.put_varint(*val as u64)?;
+                }
+
+                if let Some(val) = enable_webtransport {
+                    b.put_varint(SETTINGS_ENABLE_WEBTRANSPORT)?;
                     b.put_varint(*val as u64)?;
                 }
 
